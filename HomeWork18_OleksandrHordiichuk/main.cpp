@@ -6,16 +6,48 @@ using namespace std;
 class Weapon
 {
 public:
-	Weapon(const string& name) : name(name){}
+	virtual ~Weapon() {}
 
-	string GetName() const
+	virtual float GetDamage() const
+	{
+		return damage;
+	}
+
+	virtual string GetName() const
 	{
 		return name;
 	}
 
+protected:
+	Weapon(const string& name, float damage) : 
+		name(name), damage(damage){}
+
 private:
 	string name;
+	float damage;
 };
+
+class Pistol : public Weapon
+{
+
+public:		
+	Pistol() : Weapon("Pistol", 15) {}
+	
+
+};
+
+class Rifle : public Weapon
+{
+public:
+	Rifle() : Weapon("Rifle", 35) {}
+};
+
+class Sword : public Weapon
+{
+public:
+	Sword() : Weapon("Sword", 100) {}
+};
+
 
 class Character
 {
@@ -44,15 +76,21 @@ private:
 	Weapon* weapon;
 };
 
+
+
 int main()
 {
 	Character character1;
+	Character character2;
+		
+	Pistol pistol;
+	Rifle rifle;
 
-	Weapon gun("gun");
-
-	character1.SetWeapon(&gun);
+	character1.SetWeapon(&pistol);
+	character2.SetWeapon(&rifle);
 
 	character1.WhatWeapon();
+	character2.WhatWeapon();
 
 	return 0;
 }
