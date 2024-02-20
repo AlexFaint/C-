@@ -19,8 +19,8 @@ public:
 	}
 
 protected:
-	Weapon(const string& name, float damage) : 
-		name(name), damage(damage){}
+	Weapon(const string& name, float damage) :
+		name(name), damage(damage) {}
 
 private:
 	string name;
@@ -30,9 +30,9 @@ private:
 class Pistol : public Weapon
 {
 
-public:		
+public:
 	Pistol() : Weapon("Pistol", 15) {}
-	
+
 
 };
 
@@ -52,14 +52,14 @@ public:
 class Character
 {
 public:
-	Character() : weapon(nullptr){}
+	Character() : weapon(nullptr) {}
 
-	void SetWeapon(Weapon* weapon)
+	void SetWeapon(unique_ptr<Weapon> weapon)
 	{
-		this->weapon = weapon;
+		this->weapon = move(weapon);
 	}
 
-	void WhatWeapon() const 
+	void WhatWeapon() const
 	{
 		if (weapon != nullptr)
 		{
@@ -70,10 +70,9 @@ public:
 			cout << "You haw no weapon." << endl;
 		}
 	}
-	
-private:
 
-	Weapon* weapon;
+private:
+	unique_ptr<Weapon> weapon;
 };
 
 
@@ -82,12 +81,12 @@ int main()
 {
 	Character character1;
 	Character character2;
-		
-	Pistol pistol;
-	Rifle rifle;
 
-	character1.SetWeapon(&pistol);
-	character2.SetWeapon(&rifle);
+	unique_ptr<Weapon> pistol = make_unique<Pistol>();
+	unique_ptr<Weapon> rifle = make_unique<Rifle>();
+
+	character1.SetWeapon(move(pistol));
+	character2.SetWeapon(move(rifle));
 
 
 	character1.WhatWeapon();
